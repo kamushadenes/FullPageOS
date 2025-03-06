@@ -9,6 +9,14 @@ set -e
 
 source /common.sh
 
+function set_config_var_local() {
+	raspi-config nonint set_config_var $1 "$2" /"${BASE_BOOT_MOUNT_PATH}"/config.txt
+}
+
+function clear_config_var_local() {
+	raspi-config nonint clear_config_var $1 /"${BASE_BOOT_MOUNT_PATH}"/config.txt
+}
+
 unpack /filesystem/opt /opt
 unpack /filesystem/boot /"${BASE_BOOT_MOUNT_PATH}"
 unpack /filesystem/root_init /
@@ -22,22 +30,23 @@ if [ "$FULLPAGEOS_CUSTOM_SPLASHSCREEN" == "yes" ]; then
 	if [ "${BASE_BOARD}" == raspberrypi* ]; then
 		sed -i 's/$/ logo.nologo consoleblank=0 loglevel=0 quiet/' /"${BASE_BOOT_MOUNT_PATH}"/cmdline.txt
 	fi
-	set_config_var disable_splash 1
+	set_config_var_local disable_splash 1
 	systemctl enable splashscreen.service
 	systemctl disable getty@tty1
 fi
 
 # Configure touchscreenn
 if [ "$FULLPAGEOS_TOUCH_SCREEN" == "yes" ]; then
-	set_config_var hdmi_force_edid_audio 1
-	set_config_var max_usb_current 1
-	set_config_var hdmi_force_hotplug 1
-	set_config_var config_hdmi_boost 7
-	set_config_var hdmi_group 2
-	set_config_var hdmi_mode 87
-	set_config_var hdmi_drive 2
-	set_config_var display_rotate 0
-	set_config_var hdmi_timings "1024 1 50 18 50 600 1 15 3 15 0 0 0 60 0 40000000 3"
+	set_config_var_local hdmi_force_edid_audio 1
+	set_config_var_local max_usb_current 1
+	set_config_var_local hdmi_force_hotplug 1
+	set_config_var_local config_hdmi_boost 7
+	set_config_var_local hdmi_group 2
+	set_config_var_local hdmi_mode 87
+	set_config_var_local hdmi_drive 2
+	set_config_var_local display_rotate 0
+	set_config_var_local hdmi_timings "1024 1 50 18 50 600 1 15 3 15 0 0 0 60 0 40000000 3"
+	clear_config_var_local dtoverlay
 fi
 
 remove_extra=$(remove_if_installed scratch squeak-plugins-scratch squeak-vm python-minecraftpi minecraft-pi sonic-pi oracle-java8-jdk bluej greenfoot libreoffice-common libreoffice-core freepats)
