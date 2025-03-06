@@ -58,6 +58,12 @@ apt-get autoremove -y
 #apt-get tools
 apt-get -y --force-yes install git screen checkinstall avahi-daemon libavahi-compat-libdnssd1 xterm xdotool vim expect feh pulseaudio
 
+if [ "$FULLPAGEOS_SNAPCLIENT" == "yes" ]; then
+	echo "default-server = 127.0.0.1" >>/etc/pulse/client.conf
+	echo "load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1" >>/etc/pulse/default.pa
+	apt-get -y --force-yes install snapclient
+fi
+
 if [ "$FULLPAGEOS_INCLUDE_CHROMIUM" == "yes" ]; then
 	apt-get install -y --force-yes chromium-browser
 	sed -i 's@%BROWSER_START_SCRIPT%@/opt/custompios/scripts/start_chromium_browser@g' /opt/custompios/scripts/run_onepageos
