@@ -1,1 +1,1 @@
-http://localhost/FullPageDashboard
+https://haos.internal.hyades.io/floor-plan/0

@@ -39,3 +39,6 @@
 
 # Install and enable x11vnc service
 [ -n "$FULLPAGEOS_INCLUDE_X11VNC" ] || FULLPAGEOS_INCLUDE_X11VNC=yes
+
+# Configure touch screen
+[ -n "$FULLPAGEOS_TOUCH_SCREEN" ] || FULLPAGEOS_TOUCH_SCREEN=yes
